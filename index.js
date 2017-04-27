@@ -1,6 +1,4 @@
 'use strict';
-const getStream = require('get-stream');
-const isStream = require('is-stream');
 const micro = require('micro');
 const yazl = require('yazl');
 
@@ -10,7 +8,7 @@ module.exports = micro(async req => {
 
 	for (const x of data) {
 		const body = x.data.data || x.data;
-		const buf = isStream(body) ? await getStream.buffer(body) : Buffer.isBuffer(body) ? body : Buffer.from(body);
+		const buf = Buffer.isBuffer(body) ? body : Buffer.from(body);
 
 		zip.addBuffer(buf, x.path, {
 			compress: true,

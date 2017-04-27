@@ -1,14 +1,12 @@
-import fs from 'fs';
 import decompressUnzip from 'decompress-unzip';
 import got from 'got';
 import isZip from 'is-zip';
-import pify from 'pify';
 import test from 'ava';
 import testListen from 'test-listen';
 import m from './';
 
+const fixture = 'unicorn';
 let url;
-let fixture;
 
 const getZip = async (url, files) => (await got.post(url, {
 	encoding: null,
@@ -18,7 +16,6 @@ const getZip = async (url, files) => (await got.post(url, {
 
 test.before(async () => {
 	url = await testListen(m);
-	fixture = await pify(fs.readFile)(__filename);
 });
 
 test('single file', async t => {
@@ -27,8 +24,11 @@ test('single file', async t => {
 		path: 'foo.js'
 	}]);
 
+	const files = await decompressUnzip()(body);
+
 	t.true(isZip(body));
-	t.is((await decompressUnzip()(body))[0].path, 'foo.js');
+	t.is(files[0].path, 'foo.js');
+	t.is(files[0].data.toString(), fixture);
 });
 
 test('nested file', async t => {
@@ -41,6 +41,7 @@ test('nested file', async t => {
 
 	t.true(isZip(body));
 	t.is(files[0].path, 'unicorn/foo.js');
+	t.is(files[0].data.toString(), fixture);
 });
 
 test('mode', async t => {
@@ -54,6 +55,7 @@ test('mode', async t => {
 
 	t.true(isZip(body));
 	t.is(files[0].mode, 33261);
+	t.is(files[0].data.toString(), fixture);
 });
 
 test('mtime', async t => {
@@ -68,11 +70,12 @@ test('mtime', async t => {
 
 	t.true(isZip(body));
 	t.is(files[0].mtime.toISOString(), date.toISOString());
+	t.is(files[0].data.toString(), fixture);
 });
 
-test('streaming body', async t => {
+test('buffer body', async t => {
 	const body = await getZip(url, [{
-		data: fs.createReadStream(__filename),
+		data: Buffer.from(fixture),
 		path: 'foo.js'
 	}]);
 
