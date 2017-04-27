@@ -1,0 +1,45 @@
+{
+  "name": "zipy",
+  "version": "0.0.0",
+  "description": "Simple service for creating ZIP files",
+  "license": "MIT",
+  "repository": "kevva/zipy",
+  "author": {
+    "name": "Kevin Martensson",
+    "email": "kevinmartensson@gmail.com",
+    "url": "github.com/kevva"
+  },
+  "bin": "cli.js",
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "test": "xo && ava"
+  },
+  "files": [
+    "cli.js",
+    "index.js"
+  ],
+  "keywords": [
+    "api",
+    "micro",
+    "service",
+    "zip"
+  ],
+  "dependencies": {
+    "get-stream": "^3.0.0",
+    "is-stream": "^1.1.0",
+    "meow": "^3.7.0",
+    "micro": "^7.3.2",
+    "yazl": "^2.4.2"
+  },
+  "devDependencies": {
+    "ava": "*",
+    "decompress-unzip": "^4.0.1",
+    "got": "^6.7.1",
+    "is-zip": "^1.0.0",
+    "pify": "^2.3.0",
+    "test-listen": "^1.0.2",
+    "xo": "*"
+  }
+}
