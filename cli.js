@@ -1,14 +1,8 @@
 #!/usr/bin/env node
 'use strict';
-const meow = require('meow');
-const m = require('./');
+const execa = require('execa');
 
-const cli = meow(`
-	Usage
-	  $ zipy
-
-	Options
-	  --port  Port to listen on
-`);
-
-m.listen(cli.flags.port || process.env.PORT || 3000);
+execa('npm', ['run', 'start', '--'].concat(process.argv.slice(2)), {
+	cwd: __dirname,
+	stdio: 'inherit'
+});

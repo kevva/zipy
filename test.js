@@ -1,6 +1,7 @@
 import decompressUnzip from 'decompress-unzip';
 import got from 'got';
 import isZip from 'is-zip';
+import micro from 'micro';
 import test from 'ava';
 import testListen from 'test-listen';
 import m from './';
@@ -15,7 +16,7 @@ const getZip = async (url, files) => (await got.post(url, {
 })).body;
 
 test.before(async () => {
-	url = await testListen(m);
+	url = await testListen(micro(m));
 });
 
 test('single file', async t => {

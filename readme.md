@@ -6,34 +6,17 @@
 ## Install
 
 ```
-$ npm install --save zipy
+$ npm install --global zipy
 ```
 
 
 ## Usage
 
 ```
-$ zipy --help
-
-  Simple service for creating ZIP files
-
-  Usage
-    $ zipy
-
-  Options
-    --port  Port to listen on
+$ zipy
 ```
 
-
-## Programmatic usage
-
-```js
-const zipy = require('zipy');
-
-zipy.listen(3000, () => {
-	console.log('Listening on http://localhost:3000');
-});
-```
+`zipy` accepts the same arguments as [`micro`](https://github.com/zeit/micro).
 
 
 ## License

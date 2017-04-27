@@ -2,7 +2,7 @@
 const micro = require('micro');
 const yazl = require('yazl');
 
-module.exports = micro(req => micro.json(req).then(data => {
+module.exports = req => micro.json(req).then(data => {
 	const zip = new yazl.ZipFile();
 
 	for (const x of data) {
@@ -19,4 +19,4 @@ module.exports = micro(req => micro.json(req).then(data => {
 	zip.end();
 
 	return zip.outputStream;
-}));
+});
