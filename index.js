@@ -9,7 +9,7 @@ module.exports = micro(async req => {
 	const zip = new yazl.ZipFile();
 
 	for (const x of data) {
-		const body = x.data.data || data;
+		const body = x.data.data || x.data;
 		const buf = isStream(body) ? await getStream.buffer(body) : Buffer.isBuffer(body) ? body : Buffer.from(body);
 
 		zip.addBuffer(buf, x.path, {
