@@ -1,6 +1,6 @@
 {
   "name": "zipy",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Simple service for creating ZIP files",
   "license": "MIT",
   "repository": "kevva/zipy",
