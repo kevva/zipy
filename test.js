@@ -4,12 +4,12 @@ import isZip from 'is-zip';
 import micro from 'micro';
 import test from 'ava';
 import testListen from 'test-listen';
-import m from './';
+import m from '.';
 
 const fixture = 'unicorn';
 let url;
 
-const getZip = async (url, files) => (await got.post(url, {
+const getZip = async files => (await got.post(url, {
 	encoding: null,
 	headers: {'content-type': 'application/json'},
 	body: JSON.stringify(files)
@@ -20,7 +20,7 @@ test.before(async () => {
 });
 
 test('single file', async t => {
-	const body = await getZip(url, [{
+	const body = await getZip([{
 		data: fixture,
 		path: 'foo.js'
 	}]);
@@ -33,7 +33,7 @@ test('single file', async t => {
 });
 
 test('nested file', async t => {
-	const body = await getZip(url, [{
+	const body = await getZip([{
 		data: fixture,
 		path: 'unicorn/foo.js'
 	}]);
@@ -46,7 +46,7 @@ test('nested file', async t => {
 });
 
 test('mode', async t => {
-	const body = await getZip(url, [{
+	const body = await getZip([{
 		data: fixture,
 		mode: 33261,
 		path: 'foo.js'
@@ -61,7 +61,7 @@ test('mode', async t => {
 
 test('mtime', async t => {
 	const date = new Date('2000-01-01');
-	const body = await getZip(url, [{
+	const body = await getZip([{
 		data: fixture,
 		mtime: date,
 		path: 'foo.js'
@@ -75,11 +75,15 @@ test('mtime', async t => {
 });
 
 test('buffer body', async t => {
-	const body = await getZip(url, [{
-		data: Buffer.from(fixture),
+	const buf = Buffer.from(fixture);
+	const body = await getZip([{
+		data: buf,
 		path: 'foo.js'
 	}]);
 
+	const files = await decompressUnzip()(body);
+
 	t.true(isZip(body));
-	t.is((await decompressUnzip()(body))[0].path, 'foo.js');
+	t.is(files[0].path, 'foo.js');
+	t.deepEqual(files[0].data, buf);
 });
